@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { Root } from "./routes/root"
 import { TodoListContainer } from "./components/TodoListContainer"
 import { Detail } from "./components/Detail"
-import { createContext, useCallback, useState } from "react"
+import { createContext, useCallback, useEffect, useState } from "react"
 
 interface Subtask {
   id: string;
@@ -34,6 +34,19 @@ const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
   const [inputValue, setInputValue] = useState<string>('')
   const [subtaskInputValue, setSubtaskInputValue] = useState<string>("");
+
+  // Carica i todos dal localStorage al mount
+  useEffect(() => {
+    const storedTodos = localStorage.getItem('todos');
+    if(storedTodos) {
+      setTodos(JSON.parse(storedTodos))
+    }
+  }, [])
+
+  // Salva i todos al localStorage quando cambiano
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   const addTodo = () => {
     if (inputValue !== '') {
@@ -70,6 +83,9 @@ const App: React.FC = () => {
   }, []);
 
   const addSubtask = (todoId: string, subtaskText: string) => {
+    if(!subtaskText.trim()) {
+      return;
+    }
     const updatedTodos = todos.map((todo) => {
       if (todo.id === todoId) {
         return {
@@ -83,7 +99,7 @@ const App: React.FC = () => {
           return todo;
       }
     });
-  
+
     setSubtaskInputValue("");
     setTodos(updatedTodos);
     console.log(todos)

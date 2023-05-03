@@ -1,4 +1,4 @@
-import { Accordion, Container, Divider, Icon, ListItem, ListV2, Row, Text } from "@zextras/carbonio-design-system"
+import { Accordion, Container, Divider, Icon, ListItem, ListV2, Padding, Row, Text } from "@zextras/carbonio-design-system"
 import { useMemo } from "react"
 import { Link } from "react-router-dom";
 
@@ -29,11 +29,11 @@ export const TodoList: React.FC<TodoListProps> = ({ todos }) => {
                     {() => (
                         <>
                             <Container orientation="horizontal" mainAlignment="space-between" padding="medium">
-                                { todo.isCompleted && <Icon icon="Checkmark" size={"large"} />}
+                                { todo.isCompleted && <Padding right="medium"><Icon icon="Checkmark" size={"large"} color="success" /></Padding>}
                                     <Accordion items={[
                                     {
                                         id: todo.id,
-                                        label: todo.label,
+                                        label: todo.id + '. sdsads' + todo.label,
                                         items: todo.items.map((subtask) => ({
                                             id: subtask.id,
                                             label: subtask.label
