@@ -17,7 +17,13 @@ export const Form: React.FC<FormProps> = ({ inputValue, setInputValue, addTodo }
                     }
                 }
                 onEnter={() => addTodo()} />
-            <Button label="Add" onClick={() => addTodo()} />
+            <Button
+                type="outlined"
+                width="fit"
+                minWidth="fit-content"
+                label="Add"
+                onClick={() => addTodo()}
+            />
         </Container>
     )
 }
