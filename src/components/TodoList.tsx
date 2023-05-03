@@ -33,7 +33,7 @@ export const TodoList: React.FC<TodoListProps> = ({ todos }) => {
                                     <Accordion items={[
                                     {
                                         id: todo.id,
-                                        label: todo.id + '. sdsads' + todo.label,
+                                        label: todo.id + '. ' + todo.label,
                                         items: todo.items.map((subtask) => ({
                                             id: subtask.id,
                                             label: subtask.label

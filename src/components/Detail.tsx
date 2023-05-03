@@ -24,7 +24,13 @@ interface DetailProps {
     deleteTodo: (id: string) => void;
     addSubtask: (id: string, subtaskText: string) => void;
     subtaskInputValue: string;
-    setSubtaskInputValue: (e: string) => void; 
+    setSubtaskInputValue: (e: string) => void;
+    editTodo: (id: string, newText: string) => void;
+    inputValue: string;
+    setInputValue: (e: string) => void;
+    isEdit: boolean;
+    setIsEdit: (e: boolean) => void;
+    toggleEdit: () => void;
 }
 
 const ContainerDetail = styled.div`
@@ -46,7 +52,15 @@ export const Detail: React.FC<DetailProps> = ({
     todos,
     completeTodo,
     deleteTodo,
-    addSubtask, subtaskInputValue, setSubtaskInputValue
+    addSubtask,
+    subtaskInputValue,
+    setSubtaskInputValue,
+    editTodo,
+    inputValue,
+    setInputValue,
+    isEdit,
+    setIsEdit,
+    toggleEdit
 }) => {
 
     const { id } = useParams()
@@ -61,12 +75,25 @@ export const Detail: React.FC<DetailProps> = ({
             <div>
                 <Row mainAlignment="space-between">
                     <Text size={"extralarge"} weight={"bold"}>Task {todo.id}:</Text>
+                    <Button label="Edit" onClick={() => toggleEdit()} />
                 </Row>
-                <Text>{todo.label}</Text>
+                {!isEdit ?
+                    <Text>{todo.label}</Text> :
+                    <Input
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onEnter={() => editTodo(todo.id, inputValue)}
+                    />
+                }
                 <Text>Created: {todo.createdDate.toLocaleString()}</Text>
                 <Text>Completed: {todo.isCompleted ? todo.completedDate?.toLocaleString() : "Not done"}</Text>
             </div>
-            <Subtask addSubtask={addSubtask} id={todo.id} subtaskInputValue={subtaskInputValue} setSubtaskInputValue={setSubtaskInputValue} />
+            <Subtask
+                addSubtask={addSubtask}
+                id={todo.id}
+                subtaskInputValue={subtaskInputValue}
+                setSubtaskInputValue={setSubtaskInputValue}
+            />
             <ContainerBtn>
                 <Button
                     width={"fill"}

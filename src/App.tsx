@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { Root } from "./routes/root"
 import { TodoListContainer } from "./components/TodoListContainer"
 import { Detail } from "./components/Detail"
-import { createContext, useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 interface Subtask {
   id: string;
@@ -18,11 +18,11 @@ interface Todo {
   items: Subtask[];
 }
 
-interface Context {
-  todos: Todo[];
-  deleteTodo: (id: string) => void;
-  completeTodo: (id: string) => void;
-}
+// interface Context {
+//   todos: Todo[];
+//   deleteTodo: (id: string) => void;
+//   completeTodo: (id: string) => void;
+// }
 
 // export const TodosContext = createContext<Context>({
 //   todos: [],
@@ -34,11 +34,13 @@ const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
   const [inputValue, setInputValue] = useState<string>('')
   const [subtaskInputValue, setSubtaskInputValue] = useState<string>("");
+  const [newInputValue, setNewInputValue] = useState<string>("")
+  const [isEdit, setIsEdit] = useState<boolean>(false)
 
   // Carica i todos dal localStorage al mount
   useEffect(() => {
     const storedTodos = localStorage.getItem('todos');
-    if(storedTodos) {
+    if (storedTodos) {
       setTodos(JSON.parse(storedTodos))
     }
   }, [])
@@ -65,6 +67,25 @@ const App: React.FC = () => {
     }
   }
 
+  const toggleEdit = useCallback(() => {
+    setIsEdit(!isEdit)
+}, [isEdit])
+
+  const editTodo = useCallback((id: string, newText: string) => {
+    setTodos((prev) => {
+      return prev.map(todo => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            label: newText
+          }
+        }
+        return todo
+      })
+    })
+    setIsEdit(false)
+  }, [])
+
   const deleteTodo = useCallback((id: string) => {
     setTodos((prev) => prev.filter(todo => todo.id !== id))
   }, [])
@@ -83,7 +104,7 @@ const App: React.FC = () => {
   }, []);
 
   const addSubtask = (todoId: string, subtaskText: string) => {
-    if(!subtaskText.trim()) {
+    if (!subtaskText.trim()) {
       return;
     }
     const updatedTodos = todos.map((todo) => {
@@ -96,7 +117,7 @@ const App: React.FC = () => {
           ],
         };
       } else {
-          return todo;
+        return todo;
       }
     });
 
@@ -127,7 +148,14 @@ const App: React.FC = () => {
                 completeTodo={completeTodo}
                 subtaskInputValue={subtaskInputValue}
                 setSubtaskInputValue={setSubtaskInputValue}
-                addSubtask={addSubtask}/>
+                addSubtask={addSubtask}
+                editTodo={editTodo}
+                inputValue={inputValue}
+                setInputValue={setInputValue}
+                isEdit={isEdit}
+                setIsEdit={setIsEdit}
+                toggleEdit={toggleEdit}
+              />
             }
           ]
         },

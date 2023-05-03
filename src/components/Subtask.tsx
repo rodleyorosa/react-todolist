@@ -7,10 +7,15 @@ interface SubtaskProps {
     setSubtaskInputValue: (e: string) => void;
 }
 
-export const Subtask: React.FC<SubtaskProps> = ({ addSubtask, id, subtaskInputValue, setSubtaskInputValue }) => {
+export const Subtask: React.FC<SubtaskProps> = ({
+    addSubtask,
+    id,
+    subtaskInputValue,
+    setSubtaskInputValue
+}) => {
     return (
         <div>
-            <Text size={"extralarge"}>Subtasks:</Text>
+            <Text size={"extralarge"}>Subtasks: </Text>
             <Container orientation="horizontal">
                 <Input
                     value={subtaskInputValue}
