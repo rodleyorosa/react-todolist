@@ -8,7 +8,6 @@ interface Subtask {
     label: string;
 }
 
-
 interface Todo {
     id: string;
     label: string;

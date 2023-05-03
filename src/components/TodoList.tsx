@@ -1,4 +1,4 @@
-import { Container, Divider, Icon, ListItem, ListV2, Row, Text } from "@zextras/carbonio-design-system"
+import { Accordion, Container, Divider, Icon, ListItem, ListV2, Row, Text } from "@zextras/carbonio-design-system"
 import { useMemo } from "react"
 import { Link } from "react-router-dom";
 
@@ -29,14 +29,17 @@ export const TodoList: React.FC<TodoListProps> = ({ todos }) => {
                     {() => (
                         <>
                             <Container orientation="horizontal" mainAlignment="space-between" padding="medium">
-                                <Row minWidth={"0"} display="flex" mainAlignment="space-between" width={"100%"}>
-                                    <Row gap="10px">
-                                        {todo.id}.
-                                        <Text overflow={"break-word"}>{todo.isCompleted ? <s>{todo.label}</s> : todo.label}</Text>
-                                        {todo.isCompleted ? <Icon icon={"Checkmark"} size={"large"} color="green" /> : null}
-                                    </Row>
-                                    <Icon icon={"ArrowIosForwardOutline"} size={"large"} />
-                                </Row>
+                                { todo.isCompleted && <Icon icon="Checkmark" size={"large"} />}
+                                    <Accordion items={[
+                                    {
+                                        id: todo.id,
+                                        label: todo.label,
+                                        items: todo.items.map((subtask) => ({
+                                            id: subtask.id,
+                                            label: subtask.label
+                                        }))
+                                    }
+                                ]} />
                                 <Link to={`/todos/${todo.id}`} style={{ textDecoration: 'none' }}>
                                     <Icon icon={"ArrowIosForwardOutline"} size={"large"} />
                                 </Link>

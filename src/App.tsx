@@ -74,9 +74,9 @@ const App: React.FC = () => {
       if (todo.id === todoId) {
         return {
           ...todo,
-          subtasks: [
+          items: [
             ...todo.items,
-            { id: todo.items.length + 1, text: subtaskText },
+            { id: (todo.items.length + 1).toString(), label: subtaskText },
           ],
         };
       } else {
