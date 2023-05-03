@@ -13,7 +13,7 @@ interface Todo {
     isCompleted: boolean;
     createdDate: Date;
     completedDate?: Date;
-    items?: Subtask[]
+    items: Subtask[]
 }
 
 interface TodoListProps {

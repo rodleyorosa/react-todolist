@@ -15,7 +15,7 @@ interface Todo {
   isCompleted: boolean;
   createdDate: Date;
   completedDate?: Date;
-  items?: Subtask[];
+  items: Subtask[];
 }
 
 interface Context {
@@ -33,6 +33,7 @@ interface Context {
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
   const [inputValue, setInputValue] = useState<string>('')
+  const [subtaskInputValue, setSubtaskInputValue] = useState<string>("");
 
   const addTodo = () => {
     if (inputValue !== '') {
@@ -68,6 +69,26 @@ const App: React.FC = () => {
 
   }, []);
 
+  const addSubtask = (todoId: string, subtaskText: string) => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === todoId) {
+        return {
+          ...todo,
+          subtasks: [
+            ...todo.items,
+            { id: todo.items.length + 1, text: subtaskText },
+          ],
+        };
+      } else {
+          return todo;
+      }
+    });
+  
+    setSubtaskInputValue("");
+    setTodos(updatedTodos);
+    console.log(todos)
+  }
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -88,7 +109,9 @@ const App: React.FC = () => {
                 todos={todos}
                 deleteTodo={deleteTodo}
                 completeTodo={completeTodo}
-              />
+                subtaskInputValue={subtaskInputValue}
+                setSubtaskInputValue={setSubtaskInputValue}
+                addSubtask={addSubtask}/>
             }
           ]
         },

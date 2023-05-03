@@ -2,6 +2,7 @@ import { Button, Input, Row, Text } from "@zextras/carbonio-design-system";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
+import { Subtask } from "./Subtask";
 
 interface Subtask {
     id: string;
@@ -14,13 +15,16 @@ interface Todo {
     isCompleted: boolean;
     createdDate: Date;
     completedDate?: Date;
-    items?: Subtask[]
+    items: Subtask[]
 }
 
 interface DetailProps {
     todos: Todo[];
     completeTodo: (id: string) => void;
     deleteTodo: (id: string) => void;
+    addSubtask: (id: string, subtaskText: string) => void;
+    subtaskInputValue: string;
+    setSubtaskInputValue: (e: string) => void; 
 }
 
 const ContainerDetail = styled.div`
@@ -42,6 +46,7 @@ export const Detail: React.FC<DetailProps> = ({
     todos,
     completeTodo,
     deleteTodo,
+    addSubtask, subtaskInputValue, setSubtaskInputValue
 }) => {
 
     const { id } = useParams()
@@ -61,13 +66,7 @@ export const Detail: React.FC<DetailProps> = ({
                 <Text>Created: {todo.createdDate.toLocaleString()}</Text>
                 <Text>Completed: {todo.isCompleted ? todo.completedDate?.toLocaleString() : "Not done"}</Text>
             </div>
-            <div>
-                <Text size={"extralarge"}>Subtasks:</Text>
-                <Input
-                    onChange={(e) => console.log(e.target.value)}
-                    onEnter={() => console.log()}
-                />
-            </div>
+            <Subtask addSubtask={addSubtask} id={todo.id} subtaskInputValue={subtaskInputValue} setSubtaskInputValue={setSubtaskInputValue} />
             <ContainerBtn>
                 <Button
                     width={"fill"}
