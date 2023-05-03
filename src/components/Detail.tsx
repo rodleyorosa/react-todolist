@@ -34,11 +34,9 @@ interface DetailProps {
 }
 
 const ContainerDetail = styled.div`
-    height: 50vh;
     width: 350px;
     background-color: #f5f6f8;
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
     padding: 20px;
     border-radius: 10px
@@ -75,10 +73,9 @@ export const Detail: React.FC<DetailProps> = ({
             <div>
                 <Row mainAlignment="space-between">
                     <Text size={"extralarge"} weight={"bold"}>Task {todo.id}:</Text>
-                    <Button label="Edit" onClick={() => toggleEdit()} />
                 </Row>
                 {!isEdit ?
-                    <Text>{todo.label}</Text> :
+                    <Text onClick={() => toggleEdit()}>{todo.label}</Text> :
                     <Input
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
@@ -93,6 +90,7 @@ export const Detail: React.FC<DetailProps> = ({
                 id={todo.id}
                 subtaskInputValue={subtaskInputValue}
                 setSubtaskInputValue={setSubtaskInputValue}
+                subtasks={todo.items}
             />
             <ContainerBtn>
                 <Button

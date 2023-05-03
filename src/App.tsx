@@ -69,6 +69,7 @@ const App: React.FC = () => {
 
   const toggleEdit = useCallback(() => {
     setIsEdit(!isEdit)
+    console.log(isEdit)
 }, [isEdit])
 
   const editTodo = useCallback((id: string, newText: string) => {
@@ -123,7 +124,6 @@ const App: React.FC = () => {
 
     setSubtaskInputValue("");
     setTodos(updatedTodos);
-    console.log(todos)
   }
 
   const router = createBrowserRouter([
