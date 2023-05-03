@@ -1,4 +1,4 @@
-import { Button, Input, Row, Text } from "@zextras/carbonio-design-system";
+import { Button, Input, Padding, Row, Text } from "@zextras/carbonio-design-system";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
@@ -57,7 +57,6 @@ export const Detail: React.FC<DetailProps> = ({
     inputValue,
     setInputValue,
     isEdit,
-    setIsEdit,
     toggleEdit
 }) => {
 
@@ -71,17 +70,18 @@ export const Detail: React.FC<DetailProps> = ({
     return (
         <ContainerDetail>
             <div>
-                <Row mainAlignment="space-between">
-                    <Text size={"extralarge"} weight={"bold"}>Task {todo.id}:</Text>
-                </Row>
-                {!isEdit ?
-                    <Text onClick={() => toggleEdit()}>{todo.label}</Text> :
-                    <Input
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onEnter={() => editTodo(todo.id, inputValue)}
-                    />
-                }
+                <Text size={"extralarge"} weight={"bold"}>Task {todo.id}:</Text>
+                <Padding vertical={"20px"} width="fill">
+                    {!isEdit ?
+                        <Text onClick={() => toggleEdit()}>{todo.label}</Text> :
+                        <Input
+                            onBlur={() => editTodo(todo.id, inputValue)}
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            onEnter={() => editTodo(todo.id, inputValue)}
+                        />
+                    }
+                </Padding>
                 <Text>Created: {todo.createdDate.toLocaleString()}</Text>
                 <Text>Completed: {todo.isCompleted ? todo.completedDate?.toLocaleString() : "Not done"}</Text>
             </div>

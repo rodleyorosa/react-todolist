@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { Form } from "./Form"
 import { TodoList } from "./TodoList"
-import { Container } from "@zextras/carbonio-design-system";
+import { Button, Container, Text } from "@zextras/carbonio-design-system";
+import { useState } from "react";
 
 interface Subtask {
     id: string;
@@ -21,15 +22,18 @@ interface TodoListContainerProps {
     inputValue: string;
     setInputValue: React.Dispatch<React.SetStateAction<string>>;
     addTodo: () => void;
-    todos: Todo[]
+    todos: Todo[];
+    deleteAllTodos: () => void;
 }
 
 export const TodoListContainer: React.FC<TodoListContainerProps> = ({
     inputValue,
     setInputValue,
     addTodo,
-    todos
+    todos,
+    deleteAllTodos,
 }) => {
+
     return (
         <Container orientation="horizontal">
             <Container>
@@ -40,6 +44,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                         addTodo={addTodo}
                     />
                     <TodoList todos={todos} />
+                    <Button type="outlined" label="DELETE ALL" color="error" onClick={() => deleteAllTodos()} />
                 </div>
             </Container>
             <Container>

@@ -69,7 +69,6 @@ const App: React.FC = () => {
 
   const toggleEdit = useCallback(() => {
     setIsEdit(!isEdit)
-    console.log(isEdit)
 }, [isEdit])
 
   const editTodo = useCallback((id: string, newText: string) => {
@@ -126,6 +125,10 @@ const App: React.FC = () => {
     setTodos(updatedTodos);
   }
 
+  const deleteAllTodos = useCallback(() => {
+    setTodos([])
+  }, [])
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -138,6 +141,7 @@ const App: React.FC = () => {
             setInputValue={setInputValue}
             addTodo={addTodo}
             todos={todos}
+            deleteAllTodos={deleteAllTodos}
           />,
           children: [
             {
