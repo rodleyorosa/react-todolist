@@ -1,8 +1,6 @@
-import { Button, Container, Input, Padding, Text } from "@zextras/carbonio-design-system"
+import { Badge, Button, Container, Input, Padding, Text } from "@zextras/carbonio-design-system"
 import { SubtaskList } from "./SubtaskList";
 import styled from "styled-components";
-
-const SubtaskContainer = styled.div
 
 interface Subtask {
     id: string;
@@ -26,7 +24,7 @@ export const Subtask: React.FC<SubtaskProps> = ({
 }) => {
     return (
         <Padding vertical={"50px"} width="fill">
-            <Text size={"extralarge"}>Subtasks: </Text>
+            <Text size={"extralarge"}>Subtasks: <Badge value={subtasks.length} type="unread" /></Text>
             <Container orientation="horizontal">
                 <Input
                     value={subtaskInputValue}
