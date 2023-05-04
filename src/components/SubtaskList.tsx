@@ -1,4 +1,4 @@
-import { Container, ListItem, ListV2 } from "@zextras/carbonio-design-system";
+import { Container, Icon, ListItem, ListV2, Text } from "@zextras/carbonio-design-system";
 import { useMemo } from "react";
 
 interface Subtask {
@@ -10,13 +10,18 @@ interface SubtaskListProps {
     subtasks: Subtask[]
 }
 
-export const SubtaskList: React.FC<SubtaskListProps> = ({subtasks}) => {
+export const SubtaskList: React.FC<SubtaskListProps> = ({ subtasks }) => {
     const items = useMemo(
         () =>
             subtasks.map((item) => (
                 <ListItem key={item.id}>
                     {() => (
-                        <>{item.label}</>
+                        <Container orientation="horizontal" mainAlignment="space-between">
+                            <Text>
+                                {item.label}
+                            </Text>
+                            <Icon icon="Close" size={"large"} onClick={() => console.log(item.id)}/>
+                        </Container>
                     )}
                 </ListItem>
             )),

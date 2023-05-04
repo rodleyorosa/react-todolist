@@ -1,5 +1,5 @@
-import { Button, Input, Padding, Row, Text } from "@zextras/carbonio-design-system";
-import { useParams } from "react-router-dom"
+import { Button, Container, Icon, Input, Padding, Row, Text } from "@zextras/carbonio-design-system";
+import { Link, useParams } from "react-router-dom"
 import styled from "styled-components";
 import { Subtask } from "./Subtask";
 
@@ -66,11 +66,16 @@ export const Detail: React.FC<DetailProps> = ({
     if (!todo) {
         return <h2>Task not found</h2>
     }
-    
+
     return (
         <ContainerDetail>
             <div>
-                <Text size={"extralarge"} weight={"bold"}>Task {todo.id}:</Text>
+                <Container orientation="horizontal" mainAlignment="space-between">
+                    <Text size={"extralarge"} weight={"bold"}>Task {todo.id}:</Text>
+                    <Link to="/todos">
+                        <Icon icon="Close" size={"large"} />
+                    </Link>
+                </Container>
                 <Padding vertical={"20px"} width="fill">
                     {!isEdit ?
                         <Text onClick={() => toggleEdit(todo.label)}>{todo.label}</Text> :

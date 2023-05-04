@@ -24,7 +24,7 @@ export const Subtask: React.FC<SubtaskProps> = ({
 }) => {
     return (
         <Padding vertical={"50px"} width="fill">
-            <Text size={"extralarge"}>Subtasks: <Badge value={subtasks.length} type="unread" /></Text>
+            <Text size={"extralarge"}>Subtasks:</Text>
             <Container orientation="horizontal">
                 <Input
                     value={subtaskInputValue}

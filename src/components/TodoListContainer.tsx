@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import { Form } from "./Form"
 import { TodoList } from "./TodoList"
 import { Button, Container, Text } from "@zextras/carbonio-design-system";
-import { useState } from "react";
 
 interface Subtask {
     id: string;

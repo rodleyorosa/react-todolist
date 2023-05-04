@@ -1,5 +1,5 @@
 import { Accordion, Container, Divider, Icon, ListItem, ListV2, Padding, Radio, Row, Text } from "@zextras/carbonio-design-system"
-import { useCallback, useMemo, useState } from "react"
+import { useMemo } from "react"
 import { Link } from "react-router-dom";
 
 interface Subtask {
@@ -28,22 +28,24 @@ export const TodoList: React.FC<TodoListProps> = ({ todos }) => {
                 <ListItem key={todo.id}>
                     {() => (
                         <>
-                            <Container orientation="horizontal" mainAlignment="space-between" padding="medium">
-                                {todo.isCompleted && <Padding right="medium"><Icon icon="Checkmark" size={"large"} color="success" /></Padding>}
-                                <Accordion items={[
-                                    {
-                                        id: todo.id,
-                                        label: todo.id + '. ' + todo.label,
-                                        items: todo.items.map((subtask) => ({
-                                            id: subtask.id,
-                                            label: subtask.label
-                                        }))
-                                    }
-                                ]} />
-                                <Link to={`/todos/${todo.id}`} style={{ textDecoration: 'none' }}>
+                            <Link to={`/todos/${todo.id}`} style={{ textDecoration: 'none' }}>
+                                <Container orientation="horizontal" mainAlignment="space-between" padding="medium">
+                                    <Accordion activeId={"1"} items={[
+                                        {
+                                            id: todo.id,
+                                            label: todo.id + '. ' + todo.label,
+                                            icon: todo.isCompleted ? "Checkmark" : "",
+                                            badgeType: 'unread',
+                                            badgeCounter: todo.items.length ? todo.items.length : undefined,
+                                            items: todo.items.map((subtask) => ({
+                                                id: subtask.id,
+                                                label: subtask.label
+                                            }))
+                                        }
+                                    ]} />
                                     <Icon icon={"ArrowIosForwardOutline"} size={"large"} />
-                                </Link>
-                            </Container>
+                                </Container>
+                            </Link>
                             <Divider style={{ width: "95%", margin: "auto" }} />
                         </>
                     )}
