@@ -53,7 +53,7 @@ const App: React.FC = () => {
   const addTodo = () => {
     if (inputValue !== '') {
       const newTodo = {
-        id: (todos.length + 1).toString(),
+        id: (Math.floor(Math.random() * 101)).toString(),
         label: inputValue,
         isCompleted: false,
         createdDate: new Date(),
@@ -113,7 +113,7 @@ const App: React.FC = () => {
           ...todo,
           items: [
             ...todo.items,
-            { id: (todo.items.length + 1).toString(), label: subtaskText },
+            { id: (Math.floor(Math.random() * 101)).toString(), label: subtaskText },
           ],
         };
       } else {
