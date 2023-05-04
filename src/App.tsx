@@ -18,18 +18,6 @@ interface Todo {
   items: Subtask[];
 }
 
-// interface Context {
-//   todos: Todo[];
-//   deleteTodo: (id: string) => void;
-//   completeTodo: (id: string) => void;
-// }
-
-// export const TodosContext = createContext<Context>({
-//   todos: [],
-//   completeTodo: () => undefined,
-//   deleteTodo: () => { throw Error("") },
-// })
-
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
   const [inputValue, setInputValue] = useState<string>('')
@@ -67,7 +55,8 @@ const App: React.FC = () => {
     }
   }
 
-  const toggleEdit = useCallback(() => {
+  const toggleEdit = useCallback((todoText) => {
+    setNewInputValue(todoText)
     setIsEdit(!isEdit)
 }, [isEdit])
 
@@ -159,6 +148,8 @@ const App: React.FC = () => {
                 isEdit={isEdit}
                 setIsEdit={setIsEdit}
                 toggleEdit={toggleEdit}
+                newInputValue={newInputValue}
+                setNewInputValue={setNewInputValue}
               />
             }
           ]
@@ -168,13 +159,7 @@ const App: React.FC = () => {
   ])
 
   return (
-    // <TodosContext.Provider value={{
-    //   todos,
-    //   completeTodo,
-    //   deleteTodo,
-    // }}>
     <RouterProvider router={router} />
-    // </TodosContext.Provider>
   )
 }
 

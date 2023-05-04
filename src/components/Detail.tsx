@@ -1,5 +1,4 @@
 import { Button, Input, Padding, Row, Text } from "@zextras/carbonio-design-system";
-import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
 import { Subtask } from "./Subtask";
@@ -30,7 +29,9 @@ interface DetailProps {
     setInputValue: (e: string) => void;
     isEdit: boolean;
     setIsEdit: (e: boolean) => void;
-    toggleEdit: () => void;
+    toggleEdit: (todoText: string) => void;
+    newInputValue: string;
+    setNewInputValue: (e: string) => void
 }
 
 const ContainerDetail = styled.div`
@@ -54,10 +55,10 @@ export const Detail: React.FC<DetailProps> = ({
     subtaskInputValue,
     setSubtaskInputValue,
     editTodo,
-    inputValue,
-    setInputValue,
     isEdit,
-    toggleEdit
+    toggleEdit,
+    newInputValue,
+    setNewInputValue
 }) => {
 
     const { id } = useParams()
@@ -65,20 +66,19 @@ export const Detail: React.FC<DetailProps> = ({
     if (!todo) {
         return <h2>Task not found</h2>
     }
-
-
+    
     return (
         <ContainerDetail>
             <div>
                 <Text size={"extralarge"} weight={"bold"}>Task {todo.id}:</Text>
                 <Padding vertical={"20px"} width="fill">
                     {!isEdit ?
-                        <Text onClick={() => toggleEdit()}>{todo.label}</Text> :
+                        <Text onClick={() => toggleEdit(todo.label)}>{todo.label}</Text> :
                         <Input
-                            onBlur={() => editTodo(todo.id, inputValue)}
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onEnter={() => editTodo(todo.id, inputValue)}
+                            onBlur={() => editTodo(todo.id, newInputValue)}
+                            value={newInputValue}
+                            onChange={(e) => setNewInputValue(e.target.value)}
+                            onEnter={() => editTodo(todo.id, newInputValue)}
                         />
                     }
                 </Padding>
