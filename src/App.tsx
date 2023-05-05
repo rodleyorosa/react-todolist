@@ -118,6 +118,19 @@ const App: React.FC = () => {
     setTodos([])
   }, [])
 
+  const deleteSubtask = (todoId: string, subtaskId: string) => {
+    setTodos(prev => {
+      const updatedList = prev.map(todo => {
+        if (todo.id === todoId) {
+          const updatedSubtasks = todo.items.filter(subtask => subtask.id !== subtaskId)
+          return { ...todo, items: updatedSubtasks }
+        }
+        return todo
+      })
+      return updatedList
+    })
+  }
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -150,6 +163,7 @@ const App: React.FC = () => {
                 toggleEdit={toggleEdit}
                 newInputValue={newInputValue}
                 setNewInputValue={setNewInputValue}
+                deleteSubtask={deleteSubtask}
               />
             }
           ]

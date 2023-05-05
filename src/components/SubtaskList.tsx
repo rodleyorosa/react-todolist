@@ -7,10 +7,12 @@ interface Subtask {
 }
 
 interface SubtaskListProps {
-    subtasks: Subtask[]
+    subtasks: Subtask[];
+    todoId: string;
+    deleteSubtask: (todoId: string, subtaskId: string) => void
 }
 
-export const SubtaskList: React.FC<SubtaskListProps> = ({ subtasks }) => {
+export const SubtaskList: React.FC<SubtaskListProps> = ({ subtasks, deleteSubtask, todoId }) => {
     const items = useMemo(
         () =>
             subtasks.map((item) => (
@@ -20,7 +22,7 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({ subtasks }) => {
                             <Text>
                                 {item.label}
                             </Text>
-                            <Icon icon="Close" size={"large"} onClick={() => console.log(item.id)}/>
+                            <Icon icon="Close" size={"large"} onClick={() => deleteSubtask(todoId, item.id)}/>
                         </Container>
                     )}
                 </ListItem>

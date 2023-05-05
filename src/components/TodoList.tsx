@@ -1,6 +1,6 @@
-import { Accordion, Container, Divider, Icon, ListItem, ListV2, Padding, Radio, Row, Text } from "@zextras/carbonio-design-system"
-import { useMemo } from "react"
-import { Link, useNavigate } from "react-router-dom";
+import { Accordion, Button, Checkbox, Container, Divider, Icon, IconCheckbox, ListItem, ListV2, Padding, Radio, Row, Text, Tooltip } from "@zextras/carbonio-design-system"
+import { useEffect, useMemo, useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 interface Subtask {
     id: string;
@@ -17,10 +17,14 @@ interface Todo {
 }
 
 interface TodoListProps {
-    todos: Todo[]
+    todos: Todo[];
+    isSelectionActive: boolean;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({ todos }) => {
+export const TodoList: React.FC<TodoListProps> = ({
+    todos,
+    isSelectionActive
+}) => {
 
     const navigate = useNavigate()
 
@@ -30,22 +34,26 @@ export const TodoList: React.FC<TodoListProps> = ({ todos }) => {
                 <ListItem key={todo.id}>
                     {() => (
                         <>
-                            <Accordion padding={"medium"} items={[
-                                {
-                                    id: todo.id,
-                                    label: todo.id + '. ' + todo.label,
-                                    icon: todo.isCompleted ? "Checkmark" : "",
-                                    badgeType: 'unread',
-                                    badgeCounter: todo.items.length ? todo.items.length : undefined,
-                                    onClick: () => navigate("/todos/" + todo.id),
-                                    items: todo.items.map((subtask) => ({
-                                        id: subtask.id,
-                                        label: subtask.label
-                                    }))
-                                }
-                            ]} />
+                            <Container orientation="horizontal" padding={"medium"}>
+                                { isSelectionActive ? <Checkbox /> : null }
+                                <Accordion
+                                    items={[
+                                        {
+                                            id: todo.id,
+                                            label: todo.id + '. ' + todo.label,
+                                            icon: todo.isCompleted ? "Checkmark" : "",
+                                            badgeType: 'unread',
+                                            badgeCounter: todo.items.length ? todo.items.length : undefined,
+                                            onClick: () => navigate("/todos/" + todo.id),
+                                            items: todo.items.map((subtask) => ({
+                                                id: subtask.id,
+                                                label: subtask.label
+                                            }))
+                                        }
+                                    ]} />
+                            </Container>
                             <Divider style={{ width: "95%", margin: "auto" }} />
-                        </>
+                        </> 
                     )}
                 </ListItem>
             )), [todos]

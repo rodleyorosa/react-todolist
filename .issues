@@ -1,0 +1,2 @@
+- onEnter prop pf Input component in Form.tsx doesn't let me go to task detail
+- can't update value of prop isSelectionActive (in TodoListContainer) to show the Checkbox component in TodoList.tsx

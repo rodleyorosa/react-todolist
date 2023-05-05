@@ -31,7 +31,8 @@ interface DetailProps {
     setIsEdit: (e: boolean) => void;
     toggleEdit: (todoText: string) => void;
     newInputValue: string;
-    setNewInputValue: (e: string) => void
+    setNewInputValue: (e: string) => void;
+    deleteSubtask: (todoId: string, subtaskId: string) => void
 }
 
 const ContainerDetail = styled.div`
@@ -58,7 +59,8 @@ export const Detail: React.FC<DetailProps> = ({
     isEdit,
     toggleEdit,
     newInputValue,
-    setNewInputValue
+    setNewInputValue,
+    deleteSubtask
 }) => {
 
     const { id } = useParams()
@@ -96,6 +98,7 @@ export const Detail: React.FC<DetailProps> = ({
                 subtaskInputValue={subtaskInputValue}
                 setSubtaskInputValue={setSubtaskInputValue}
                 subtasks={todo.items}
+                deleteSubtask={deleteSubtask}
             />
             <ContainerBtn>
                 <Button

@@ -1,6 +1,5 @@
-import { Badge, Button, Container, Input, Padding, Text } from "@zextras/carbonio-design-system"
+import { Button, Container, Input, Padding, Text } from "@zextras/carbonio-design-system"
 import { SubtaskList } from "./SubtaskList";
-import styled from "styled-components";
 
 interface Subtask {
     id: string;
@@ -13,6 +12,7 @@ interface SubtaskProps {
     subtaskInputValue: string;
     setSubtaskInputValue: (e: string) => void;
     subtasks: Subtask[];
+    deleteSubtask: (todoId: string, subtaskId: string) => void
 }
 
 export const Subtask: React.FC<SubtaskProps> = ({
@@ -20,7 +20,8 @@ export const Subtask: React.FC<SubtaskProps> = ({
     id,
     subtaskInputValue,
     setSubtaskInputValue,
-    subtasks
+    subtasks,
+    deleteSubtask
 }) => {
     return (
         <Padding vertical={"50px"} width="fill">
@@ -33,7 +34,7 @@ export const Subtask: React.FC<SubtaskProps> = ({
                 />
                 <Button minWidth="fit-content" label="Add" onClick={() => addSubtask(id, subtaskInputValue)} />
             </Container>
-            <SubtaskList subtasks={subtasks} />
+            <SubtaskList subtasks={subtasks} todoId={id} deleteSubtask={deleteSubtask}/>
         </Padding>
     )
 }
