@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Form } from "./Form"
 import { TodoList } from "./TodoList"
-import { Button, Container, Icon, IconButton, Padding, Text } from "@zextras/carbonio-design-system";
+import { Button, Container, Icon, IconButton, Padding, Responsive, Text } from "@zextras/carbonio-design-system";
 import { useCallback, useState } from "react";
 
 interface Subtask {
@@ -41,51 +41,103 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
     }, [])
 
     return (
-        <Container orientation="horizontal">
-            <Container>
-                <div style={{ width: "500px" }}>
-                    <div style={{ display: "flex", padding: "10px 0", alignItems: 'center' }}>
-                        {isSelectionActive ?
-                            <>
-                                <IconButton
-                                    icon="ArrowBack"
-                                    iconColor="primary"
-                                    size="large"
-                                    onClick={() => { toggleSelection() }} />
-                                <Button
-                                    size="large"
-                                    color="primary"
-                                    type="ghost"
-                                    label="SELEZIONA TUTTI"
-                                    onClick={() => { }} />
-                            </> :
-                            <>
-                                <IconButton
-                                    icon="CheckmarkSquare"
-                                    iconColor="primary"
-                                    size="large"
-                                    onClick={() => { toggleSelection() }} />
-                                <Text>Attiva modalità di selezione</Text>
-                            </>
-                        }
-                    </div>
-                    <Form
-                        inputValue={inputValue}
-                        setInputValue={setInputValue}
-                        addTodo={addTodo}
-                    />
-                    <TodoList
-                        todos={todos}
-                        isSelectionActive={isSelectionActive}
-                    />
-                    <Padding vertical={"10px"}>
-                        <Button type="outlined" label="DELETE ALL" color="error" onClick={() => deleteAllTodos()} />
-                    </Padding>
-                </div>
-            </Container>
-            <Container>
-                <Outlet />
-            </Container>
-        </Container>
+        <>
+            <Responsive mode="mobile">
+                <Container orientation="vertical">
+                    <Container>
+                        <div style={{ width: "500px" }}>
+                            <div style={{ display: "flex", padding: "10px 0", alignItems: 'center' }}>
+                                {isSelectionActive ?
+                                    <>
+                                        <IconButton
+                                            icon="ArrowBack"
+                                            iconColor="primary"
+                                            size="large"
+                                            onClick={() => { toggleSelection() }} />
+                                        <Button
+                                            size="large"
+                                            color="primary"
+                                            type="ghost"
+                                            label="SELEZIONA TUTTI"
+                                            onClick={() => { }} />
+                                    </> :
+                                    <>
+                                        <IconButton
+                                            icon="CheckmarkSquare"
+                                            iconColor="primary"
+                                            size="large"
+                                            onClick={() => { toggleSelection() }} />
+                                        <Text>Attiva modalità di selezione</Text>
+                                    </>
+                                }
+                            </div>
+                            <Form
+                                inputValue={inputValue}
+                                setInputValue={setInputValue}
+                                addTodo={addTodo}
+                            />
+                            <TodoList
+                                todos={todos}
+                                isSelectionActive={isSelectionActive}
+                            />
+                            <Padding vertical={"10px"}>
+                                <Button type="outlined" label="DELETE ALL" color="error" onClick={() => deleteAllTodos()} />
+                            </Padding>
+                        </div>
+                    </Container>
+                    <Container>
+                        <Outlet />
+                    </Container>
+                </Container>
+            </Responsive>
+            <Responsive mode="desktop">
+                <Container orientation="horizontal">
+                    <Container>
+                        <div style={{ width: "500px" }}>
+                            <div style={{ display: "flex", padding: "10px 0", alignItems: 'center' }}>
+                                {isSelectionActive ?
+                                    <>
+                                        <IconButton
+                                            icon="ArrowBack"
+                                            iconColor="primary"
+                                            size="large"
+                                            onClick={() => { toggleSelection() }} />
+                                        <Button
+                                            size="large"
+                                            color="primary"
+                                            type="ghost"
+                                            label="SELEZIONA TUTTI"
+                                            onClick={() => { }} />
+                                    </> :
+                                    <>
+                                        <IconButton
+                                            icon="CheckmarkSquare"
+                                            iconColor="primary"
+                                            size="large"
+                                            onClick={() => { toggleSelection() }} />
+                                        <Text>Attiva modalità di selezione</Text>
+                                    </>
+                                }
+                            </div>
+                            <Form
+                                inputValue={inputValue}
+                                setInputValue={setInputValue}
+                                addTodo={addTodo}
+                            />
+                            <TodoList
+                                todos={todos}
+                                isSelectionActive={isSelectionActive}
+                            />
+                            <Padding vertical={"10px"}>
+                                <Button type="outlined" label="DELETE ALL" color="error" onClick={() => deleteAllTodos()} />
+                            </Padding>
+                        </div>
+                    </Container>
+                    <Container>
+                        <Outlet />
+                    </Container>
+                </Container>
+            </Responsive>
+        </>
     )
 }
