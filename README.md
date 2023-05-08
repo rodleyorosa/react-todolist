@@ -45,4 +45,31 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-ho implementato l'accodiorn
+Io sarò super veloce, venerdì ho fixato diversi errori e stavo cercando di implementare la funzionalità suggerita/proposta da Eugenia (quello di eliminare più task contemporaneamente attraverso dei checkbox, lei mi aveva proposto diverse soluzioni e io ho optato per la soluzione simile a Mails). Oggi farò l'allineamento design (refinement), e magari se hai tempo Beatrice ti allinearò su cosa ho fatto io durante la settimana.
+
+dubbi:
+- routing, perché io l'ho fatto in un modo, però non penso sia quello che mi avevi chiesto tu
+
+fatto:
+- ho implementato i subtask
+- accordion con i task e subtask
+- eliminazione subtask
+
+testing playground (rana) extension
+cookie
+
+code freeze (periodo)
+qa che fa test
+hotfix traduzioni (che stanno cercando di togliere, fase in mezzo)
+
+react test (???)
+si riesce a testare l'elemento della secondary
+
+
+Sprint s10:
+- Files-646: riposizionamento gli elementi della secondary bar
+- Files-514: use props selecting and selected of Avatars
+- Cds-148: at the moment a ChipInput can host 20 chips by default because the limit is a prop that has 20 as default value. It’s better to set it as null as default value in order to avoid problems where the chipInput is used.
+
+
+dubbio: serve vpn per fare queste issue. perché ti ricordo che avevo il problema (il primo giorno) che mi disconnetteva automaticamente dal vpn?

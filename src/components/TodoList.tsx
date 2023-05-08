@@ -1,5 +1,5 @@
-import { Accordion, Button, Checkbox, Container, Divider, Icon, IconCheckbox, ListItem, ListV2, Padding, Radio, Row, Text, Tooltip } from "@zextras/carbonio-design-system"
-import { useEffect, useMemo, useState } from "react"
+import { Accordion, Badge, Checkbox, Container, Divider, IconButton, ListItem, ListV2, Padding, Text } from "@zextras/carbonio-design-system"
+import { useMemo } from "react"
 import { useNavigate } from "react-router-dom";
 
 interface Subtask {
@@ -21,6 +21,10 @@ interface TodoListProps {
     isSelectionActive: boolean;
 }
 
+interface CustomComponentProps {
+    item: any
+}
+
 export const TodoList: React.FC<TodoListProps> = ({
     todos,
     isSelectionActive
@@ -28,39 +32,63 @@ export const TodoList: React.FC<TodoListProps> = ({
 
     const navigate = useNavigate()
 
+    const CheckboxComponent: React.FC<CustomComponentProps> = ({ item }) => (
+        <Container orientation="horizontal" mainAlignment="space-between" padding={"10px"} crossAlignment="center">
+            <Container orientation="horizontal" mainAlignment="flex-start">
+                {isSelectionActive ?
+                    <Checkbox padding={"10px"} />
+                    :
+                    <IconButton size="extralarge" icon="InstanceOutline" borderRadius="round" onClick={() => { }} />
+                }
+                <Text>{item.label}</Text>
+            </Container>
+            {item.badgeCounter ?
+                <Badge value={item.badgeCounter} type={item.badgeType} />
+                :
+                null
+            }
+        </Container>
+    )
+
+    const ChildCustomComponent: React.FC<CustomComponentProps> = ({ item }) => (
+        <Padding all={"20px"}>
+            {item.label}
+        </Padding>
+    )
+
     const items = useMemo(
         () =>
             todos.map((todo) => (
                 <ListItem key={todo.id}>
                     {() => (
                         <>
-                            <Container orientation="horizontal" padding={"medium"}>
-                                { isSelectionActive ? <Checkbox /> : null }
+                            <Container orientation="horizontal">
                                 <Accordion
                                     items={[
                                         {
                                             id: todo.id,
-                                            label: todo.id + '. ' + todo.label,
-                                            icon: todo.isCompleted ? "Checkmark" : "",
+                                            label: todo.label,
                                             badgeType: 'unread',
-                                            badgeCounter: todo.items.length ? todo.items.length : undefined,
+                                            badgeCounter: todo.items.length,
                                             onClick: () => navigate("/todos/" + todo.id),
+                                            CustomComponent: CheckboxComponent,
                                             items: todo.items.map((subtask) => ({
                                                 id: subtask.id,
-                                                label: subtask.label
+                                                label: subtask.label,
+                                                CustomComponent: ChildCustomComponent,
                                             }))
                                         }
                                     ]} />
                             </Container>
                             <Divider style={{ width: "95%", margin: "auto" }} />
-                        </> 
+                        </>
                     )}
                 </ListItem>
-            )), [todos]
+            )), [todos, CheckboxComponent, navigate]
     )
 
     return (
-        <Container borderColor={"gray3"} height={"50vh"} mainAlignment="flex-start" orientation="vertical">
+        <Container borderColor={"gray3"} height={"50vh"} orientation="vertical">
             <ListV2>{items}</ListV2>
         </Container>
     )

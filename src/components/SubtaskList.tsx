@@ -27,7 +27,7 @@ export const SubtaskList: React.FC<SubtaskListProps> = ({ subtasks, deleteSubtas
                     )}
                 </ListItem>
             )),
-        [subtasks]
+        [subtasks, deleteSubtask, todoId]
     );
 
     return (

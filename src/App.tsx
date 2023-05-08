@@ -38,7 +38,7 @@ const App: React.FC = () => {
     localStorage.setItem('todos', JSON.stringify(todos))
   }, [todos])
 
-  const addTodo = () => {
+  const addTodo = useCallback(() => {
     if (inputValue !== '') {
       const newTodo = {
         id: (Math.floor(Math.random() * 101)).toString(),
@@ -53,12 +53,12 @@ const App: React.FC = () => {
       setInputValue("")
 
     }
-  }
+  }, [inputValue])
 
   const toggleEdit = useCallback((todoText) => {
     setNewInputValue(todoText)
     setIsEdit(!isEdit)
-}, [isEdit])
+  }, [isEdit])
 
   const editTodo = useCallback((id: string, newText: string) => {
     setTodos((prev) => {
@@ -92,7 +92,7 @@ const App: React.FC = () => {
 
   }, []);
 
-  const addSubtask = (todoId: string, subtaskText: string) => {
+  const addSubtask = useCallback((todoId: string, subtaskText: string) => {
     if (!subtaskText.trim()) {
       return;
     }
@@ -112,13 +112,13 @@ const App: React.FC = () => {
 
     setSubtaskInputValue("");
     setTodos(updatedTodos);
-  }
+  }, [todos])
 
   const deleteAllTodos = useCallback(() => {
     setTodos([])
   }, [])
 
-  const deleteSubtask = (todoId: string, subtaskId: string) => {
+  const deleteSubtask = useCallback((todoId: string, subtaskId: string) => {
     setTodos(prev => {
       const updatedList = prev.map(todo => {
         if (todo.id === todoId) {
@@ -129,7 +129,7 @@ const App: React.FC = () => {
       })
       return updatedList
     })
-  }
+  }, [])
 
   const router = createBrowserRouter([
     {
