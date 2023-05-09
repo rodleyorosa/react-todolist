@@ -1,7 +1,7 @@
 import { Button, Container, Input, Padding, Text } from "@zextras/carbonio-design-system"
 import { SubtaskList } from "./SubtaskList";
 
-interface Subtask {
+interface ItemProps {
     id: string;
     label: string;
 }
@@ -11,7 +11,7 @@ interface SubtaskProps {
     id: string;
     subtaskInputValue: string;
     setSubtaskInputValue: (e: string) => void;
-    subtasks: Subtask[];
+    subtasks: ItemProps[];
     deleteSubtask: (todoId: string, subtaskId: string) => void
 }
 

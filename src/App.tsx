@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { v4 as uuidv4, v4 } from 'uuid';
+import { v4 } from 'uuid';
 import { Router } from "./router"
 
 interface Subtask {
@@ -22,6 +22,7 @@ const App: React.FC = () => {
   const [subtaskInputValue, setSubtaskInputValue] = useState<string>("");
   const [newInputValue, setNewInputValue] = useState<string>("")
   const [isEdit, setIsEdit] = useState<boolean>(false)
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([])
 
   // Carica i todos dal localStorage al mount
   useEffect(() => {
@@ -129,6 +130,10 @@ const App: React.FC = () => {
     })
   }, [])
 
+  const handleDeleteSelectedTasks = useCallback(() => {
+    setTodos(prev => prev.filter(task => !selectedTasks.includes(task.id)))
+  }, [])
+
   return (
     <Router
       inputValue={inputValue}
@@ -148,6 +153,7 @@ const App: React.FC = () => {
       newInputValue={newInputValue}
       setNewInputValue={setNewInputValue}
       deleteSubtask={deleteSubtask}
+      handleDeleteSelectedTasks={handleDeleteSelectedTasks}
     />
   )
 }

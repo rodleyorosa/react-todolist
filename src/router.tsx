@@ -34,7 +34,8 @@ interface RouterProps {
   toggleEdit: (todoText: string) => void;
   newInputValue: string;
   setNewInputValue: (e: string) => void;
-  deleteSubtask: (todoId: string, subtaskId: string) => void
+  deleteSubtask: (todoId: string, subtaskId: string) => void;
+  handleDeleteSelectedTasks: () => void;
 }
 
 export const Router: React.FC<RouterProps> = ({
@@ -54,7 +55,8 @@ export const Router: React.FC<RouterProps> = ({
   toggleEdit,
   newInputValue,
   setNewInputValue,
-  deleteSubtask
+  deleteSubtask,
+  handleDeleteSelectedTasks
 }) => {
   const router = createBrowserRouter([
     {
@@ -69,6 +71,7 @@ export const Router: React.FC<RouterProps> = ({
             addTodo={addTodo}
             todos={todos}
             deleteAllTodos={deleteAllTodos}
+            handleDeleteSelectedTasks={handleDeleteSelectedTasks}
           />,
           children: [
             {

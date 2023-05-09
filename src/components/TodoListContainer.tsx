@@ -26,6 +26,7 @@ interface TodoListContainerProps {
     addTodo: () => void;
     todos: Todo[];
     deleteAllTodos: () => void;
+    handleDeleteSelectedTasks: () => void;
 }
 
 export const Context = createContext<boolean>(false)
@@ -36,6 +37,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
     addTodo,
     todos,
     deleteAllTodos,
+    handleDeleteSelectedTasks
 }) => {
 
     const [isSelectionActive, setIsSelectionActive] = useState<boolean>(false)
@@ -53,6 +55,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                             {isSelectionActive ?
                                 <SelectionActive
                                     toggleSelection={toggleSelection}
+                                    handleDeleteSelectedTasks={handleDeleteSelectedTasks}
                                 />
                                 :
                                 <SelectionNotActive
