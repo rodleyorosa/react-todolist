@@ -1,9 +1,9 @@
-import { Badge, Checkbox, Container, IconButton, Text } from "@zextras/carbonio-design-system"
+import { AccordionItemType, AccordionProps, Badge, Checkbox, Container, IconButton, Text } from "@zextras/carbonio-design-system"
 import { useContext } from "react"
 import { Context } from "../TodoListContainer"
 
 interface CustomComponentProps {
-    item: any
+    item: AccordionItemType
 }
 
 export const CheckboxComponent: React.FC<CustomComponentProps> = ({ item }) => {
