@@ -1,8 +1,5 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import { Root } from "./routes/root"
-import { TodoListContainer } from "./components/TodoListContainer"
-import { Detail } from "./components/Detail"
 import { useCallback, useEffect, useState } from "react"
+import { Router } from "./router"
 
 interface Subtask {
   id: string;
@@ -131,49 +128,26 @@ const App: React.FC = () => {
     })
   }, [])
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Root />,
-      children: [
-        {
-          path: "todos",
-          element: <TodoListContainer
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            addTodo={addTodo}
-            todos={todos}
-            deleteAllTodos={deleteAllTodos}
-          />,
-          children: [
-            {
-              path: ":id",
-              element: <Detail
-                todos={todos}
-                deleteTodo={deleteTodo}
-                completeTodo={completeTodo}
-                subtaskInputValue={subtaskInputValue}
-                setSubtaskInputValue={setSubtaskInputValue}
-                addSubtask={addSubtask}
-                editTodo={editTodo}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-                isEdit={isEdit}
-                setIsEdit={setIsEdit}
-                toggleEdit={toggleEdit}
-                newInputValue={newInputValue}
-                setNewInputValue={setNewInputValue}
-                deleteSubtask={deleteSubtask}
-              />
-            }
-          ]
-        },
-      ]
-    }
-  ])
-
   return (
-    <RouterProvider router={router} />
+    <Router
+      inputValue={inputValue}
+      setInputValue={setInputValue}
+      addTodo={addTodo}
+      todos={todos}
+      deleteTodo={deleteTodo}
+      deleteAllTodos={deleteAllTodos}
+      completeTodo={completeTodo}
+      subtaskInputValue={subtaskInputValue}
+      setSubtaskInputValue={setSubtaskInputValue}
+      addSubtask={addSubtask}
+      editTodo={editTodo}
+      isEdit={isEdit}
+      setIsEdit={setIsEdit}
+      toggleEdit={toggleEdit}
+      newInputValue={newInputValue}
+      setNewInputValue={setNewInputValue}
+      deleteSubtask={deleteSubtask}
+    />
   )
 }
 

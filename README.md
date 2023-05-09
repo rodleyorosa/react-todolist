@@ -45,7 +45,7 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-Io sarò super veloce, venerdì ho fixato diversi errori e stavo cercando di implementare la funzionalità suggerita/proposta da Eugenia (quello di eliminare più task contemporaneamente attraverso dei checkbox, lei mi aveva proposto diverse soluzioni e io ho optato per la soluzione simile a Mails). Oggi farò l'allineamento design (refinement), e magari se hai tempo Beatrice ti allinearò su cosa ho fatto io durante la settimana.
+venerdì ho fixato diversi errori e stavo cercando di implementare la funzionalità suggerita/proposta da Eugenia (quello di eliminare più task contemporaneamente attraverso dei checkbox, lei mi aveva proposto diverse soluzioni e io ho optato per la soluzione simile a Mails). Oggi farò l'allineamento design (refinement), e magari se hai tempo Beatrice ti allinearò su cosa ho fatto io durante la settimana.
 
 dubbi:
 - routing, perché io l'ho fatto in un modo, però non penso sia quello che mi avevi chiesto tu

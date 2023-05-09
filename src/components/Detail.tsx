@@ -1,9 +1,10 @@
-import { Button, Container, Icon, Input, Padding, Row, Text } from "@zextras/carbonio-design-system";
-import { Link, useParams } from "react-router-dom"
+import { Button } from "@zextras/carbonio-design-system";
+import { useParams } from "react-router-dom"
 import styled from "styled-components";
-import { Subtask } from "./Subtask";
+import { Subtask } from "./Subtasks/Subtask";
+import { DetailContainer } from "./Detail/DetailContainer";
 
-interface Subtask {
+interface SubtaskProps {
     id: string;
     label: string;
 }
@@ -14,7 +15,7 @@ interface Todo {
     isCompleted: boolean;
     createdDate: Date;
     completedDate?: Date;
-    items: Subtask[]
+    items: SubtaskProps[]
 }
 
 interface DetailProps {
@@ -71,27 +72,14 @@ export const Detail: React.FC<DetailProps> = ({
 
     return (
         <ContainerDetail>
-            <div>
-                <Container orientation="horizontal" mainAlignment="space-between">
-                    <Text size={"extralarge"} weight={"bold"}>Task {todo.id}:</Text>
-                    <Link to="/todos">
-                        <Icon icon="Close" size={"large"} />
-                    </Link>
-                </Container>
-                <Padding vertical={"20px"} width="fill">
-                    {!isEdit ?
-                        <Text onClick={() => toggleEdit(todo.label)}>{todo.label}</Text> :
-                        <Input
-                            onBlur={() => editTodo(todo.id, newInputValue)}
-                            value={newInputValue}
-                            onChange={(e) => setNewInputValue(e.target.value)}
-                            onEnter={() => editTodo(todo.id, newInputValue)}
-                        />
-                    }
-                </Padding>
-                <Text>Created: {todo.createdDate.toLocaleString()}</Text>
-                <Text>Completed: {todo.isCompleted ? todo.completedDate?.toLocaleString() : "Not done"}</Text>
-            </div>
+            <DetailContainer
+                todo={todo}
+                isEdit={isEdit}
+                toggleEdit={toggleEdit}
+                editTodo={editTodo}
+                newInputValue={newInputValue}
+                setNewInputValue={setNewInputValue}
+            />
             <Subtask
                 addSubtask={addSubtask}
                 id={todo.id}

@@ -3,11 +3,12 @@ import { useCallback } from "react";
 
 interface FormProps {
     inputValue: string;
-    setInputValue: React.Dispatch<React.SetStateAction<string>>;
-    addTodo: () => void
+    setInputValue: (e: string) => void;
+    addTodo: () => void;
 }
 
 export const Form: React.FC<FormProps> = ({ inputValue, setInputValue, addTodo }) => {
+
     const inputChangeHandler = useCallback<NonNullable<InputProps["onChange"]>>((e) => {
         setInputValue(e.target.value)
     }, [setInputValue])
@@ -17,7 +18,8 @@ export const Form: React.FC<FormProps> = ({ inputValue, setInputValue, addTodo }
             <Input
                 value={inputValue}
                 onChange={inputChangeHandler}
-                onEnter={addTodo} />
+                onEnter={addTodo}
+            />
             <Button
                 type="outlined"
                 width="fit"
