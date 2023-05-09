@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
+import { v4 as uuidv4, v4 } from 'uuid';
 import { Router } from "./router"
 
 interface Subtask {
@@ -38,7 +39,7 @@ const App: React.FC = () => {
   const addTodo = useCallback(() => {
     if (inputValue !== '') {
       const newTodo = {
-        id: (Math.floor(Math.random() * 101)).toString(),
+        id: v4(),
         label: inputValue,
         isCompleted: false,
         createdDate: new Date(),
@@ -99,7 +100,7 @@ const App: React.FC = () => {
           ...todo,
           items: [
             ...todo.items,
-            { id: (Math.floor(Math.random() * 101)).toString(), label: subtaskText },
+            { id: v4(), label: subtaskText },
           ],
         };
       } else {
