@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { createContext, useCallback, useEffect, useState } from "react"
 import { v4 } from 'uuid';
 import { Router } from "./router"
 
@@ -15,6 +15,18 @@ interface Todo {
   completedDate?: Date;
   items: Subtask[];
 }
+
+interface ContextProps {
+  selectedTasks: string[];
+  setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>;
+  handleDeleteSelectedTasks: () => void;
+}
+
+export const CheckboxContext = createContext<ContextProps>({
+  selectedTasks: [],
+  setSelectedTasks: () => undefined,
+  handleDeleteSelectedTasks: () => undefined
+})
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -65,7 +77,7 @@ const App: React.FC = () => {
         if (todo.id === id) {
           return {
             ...todo,
-            label: newText
+            label: newText ? newText : '-'
           }
         }
         return todo
@@ -132,29 +144,30 @@ const App: React.FC = () => {
 
   const handleDeleteSelectedTasks = useCallback(() => {
     setTodos(prev => prev.filter(task => !selectedTasks.includes(task.id)))
-  }, [])
+  }, [selectedTasks])
 
   return (
-    <Router
-      inputValue={inputValue}
-      setInputValue={setInputValue}
-      addTodo={addTodo}
-      todos={todos}
-      deleteTodo={deleteTodo}
-      deleteAllTodos={deleteAllTodos}
-      completeTodo={completeTodo}
-      subtaskInputValue={subtaskInputValue}
-      setSubtaskInputValue={setSubtaskInputValue}
-      addSubtask={addSubtask}
-      editTodo={editTodo}
-      isEdit={isEdit}
-      setIsEdit={setIsEdit}
-      toggleEdit={toggleEdit}
-      newInputValue={newInputValue}
-      setNewInputValue={setNewInputValue}
-      deleteSubtask={deleteSubtask}
-      handleDeleteSelectedTasks={handleDeleteSelectedTasks}
-    />
+    <CheckboxContext.Provider value={{ selectedTasks, setSelectedTasks, handleDeleteSelectedTasks }}>
+      <Router
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        addTodo={addTodo}
+        todos={todos}
+        deleteTodo={deleteTodo}
+        deleteAllTodos={deleteAllTodos}
+        completeTodo={completeTodo}
+        subtaskInputValue={subtaskInputValue}
+        setSubtaskInputValue={setSubtaskInputValue}
+        addSubtask={addSubtask}
+        editTodo={editTodo}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+        toggleEdit={toggleEdit}
+        newInputValue={newInputValue}
+        setNewInputValue={setNewInputValue}
+        deleteSubtask={deleteSubtask}
+      />
+    </CheckboxContext.Provider>
   )
 }
 
