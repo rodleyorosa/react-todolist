@@ -10,13 +10,16 @@ interface ContextProps {
     selectedTasks: string[];
     setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>
     handleDeleteSelectedTasks: () => void;
+    handleCompleteSelectedTasks: () => void;
+    isSelectionActive: boolean;
+    setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const SelectionActive: React.FC<SelectionActiveProps> = ({
     toggleSelection,
 }) => {
 
-    const { selectedTasks, handleDeleteSelectedTasks } = useContext<ContextProps>(CheckboxContext)
+    const { selectedTasks, handleDeleteSelectedTasks, handleCompleteSelectedTasks } = useContext<ContextProps>(CheckboxContext)
 
     return (
         <Container orientation="horizontal">
@@ -37,8 +40,8 @@ export const SelectionActive: React.FC<SelectionActiveProps> = ({
             </Container>
             {selectedTasks.length > 0 &&
                 <>
-                    <IconButton icon={"DoneAll"} onClick={() => { }} size="large" />
-                    <IconButton icon={"Trash2Outline"} onClick={handleDeleteSelectedTasks} size="large" />
+                    <IconButton icon={"DoneAll"} onClick={handleCompleteSelectedTasks} size="large" iconColor={"primary"} />
+                    <IconButton icon={"Trash2Outline"} onClick={handleDeleteSelectedTasks} size="large" iconColor={"primary"} />
                 </>
             }
         </Container>

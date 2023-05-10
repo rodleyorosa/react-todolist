@@ -20,12 +20,18 @@ interface ContextProps {
   selectedTasks: string[];
   setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>;
   handleDeleteSelectedTasks: () => void;
+  handleCompleteSelectedTasks: () => void;
+  isSelectionActive: boolean;
+  setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const CheckboxContext = createContext<ContextProps>({
   selectedTasks: [],
   setSelectedTasks: () => undefined,
-  handleDeleteSelectedTasks: () => undefined
+  handleDeleteSelectedTasks: () => undefined,
+  handleCompleteSelectedTasks: () => undefined,
+  isSelectionActive: false,
+  setIsSelectionActive: () => undefined
 })
 
 const App: React.FC = () => {
@@ -34,6 +40,7 @@ const App: React.FC = () => {
   const [subtaskInputValue, setSubtaskInputValue] = useState<string>("");
   const [newInputValue, setNewInputValue] = useState<string>("")
   const [isEdit, setIsEdit] = useState<boolean>(false)
+  const [isSelectionActive, setIsSelectionActive] = useState<boolean>(false)
   const [selectedTasks, setSelectedTasks] = useState<string[]>([])
 
   // Carica i todos dal localStorage al mount
@@ -96,7 +103,7 @@ const App: React.FC = () => {
         todo.id === id ? {
           ...todo,
           isCompleted: !todo.isCompleted,
-          completedDate: todo.isCompleted ? undefined : new Date()
+          completedDate: new Date()
         } : todo
       )
     })
@@ -144,10 +151,24 @@ const App: React.FC = () => {
 
   const handleDeleteSelectedTasks = useCallback(() => {
     setTodos(prev => prev.filter(task => !selectedTasks.includes(task.id)))
+    setIsSelectionActive(prev => !prev)
+  }, [selectedTasks])
+
+  const handleCompleteSelectedTasks = useCallback(() => {
+    setTodos((prev) => {
+      return prev.map(todo =>
+        selectedTasks.includes(todo.id) ? {
+          ...todo,
+          isCompleted: todo.isCompleted = true,
+          completedDate: new Date()
+        } : todo
+      )
+    })
+    setIsSelectionActive(prev => !prev)
   }, [selectedTasks])
 
   return (
-    <CheckboxContext.Provider value={{ selectedTasks, setSelectedTasks, handleDeleteSelectedTasks }}>
+    <CheckboxContext.Provider value={{ selectedTasks, setSelectedTasks, handleDeleteSelectedTasks, handleCompleteSelectedTasks, isSelectionActive, setIsSelectionActive }}>
       <Router
         inputValue={inputValue}
         setInputValue={setInputValue}

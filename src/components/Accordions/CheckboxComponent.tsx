@@ -6,25 +6,32 @@ import {
     IconButton,
     Text,
 } from "@zextras/carbonio-design-system";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { Context } from "../TodoListContainer";
+import { useCallback, useContext, useState } from "react";
 import { CheckboxContext } from "../../App";
+import styled from "styled-components";
+
+const TextCompleted = styled.div`
+    text-decoration: line-through
+`
 
 interface CustomComponentProps {
-    item: AccordionItemType;
+    item: AccordionItemType & { isCompleted?: boolean };
 }
 
 interface ContextProps {
     selectedTasks: string[];
     setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>
     handleDeleteSelectedTasks: () => void;
+    handleCompleteSelectedTasks: () => void;
+    isSelectionActive: boolean;
+    setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+
 export const CheckboxComponent: React.FC<CustomComponentProps> = ({ item }) => {
-    const isSelectionActive = useContext<boolean>(Context);
     const [checked, setChecked] = useState<boolean>(false);
 
-    const {selectedTasks, setSelectedTasks} = useContext<ContextProps>(CheckboxContext)
+    const { isSelectionActive, setSelectedTasks } = useContext<ContextProps>(CheckboxContext)
 
     const handleCheckbox = useCallback(() => {
         setChecked((prev) => !prev);
@@ -35,10 +42,6 @@ export const CheckboxComponent: React.FC<CustomComponentProps> = ({ item }) => {
             setSelectedTasks(prev => prev.filter(id => id !== item.id));
         }
     }, [checked, item.id, setSelectedTasks])
-
-    useEffect(() => {
-        console.log(selectedTasks)
-    }, [selectedTasks])
 
     return (
         <Container
@@ -58,7 +61,11 @@ export const CheckboxComponent: React.FC<CustomComponentProps> = ({ item }) => {
                         onClick={() => { }}
                     />
                 )}
-                <Text>{item.label}</Text>
+                {item.isCompleted ?
+                    <TextCompleted>{item.label}</TextCompleted>
+                    :
+                    <Text>{item.label}</Text>
+                }
             </Container>
             {item.badgeCounter ? (
                 <Badge value={item.badgeCounter} type="unread" />

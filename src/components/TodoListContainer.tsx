@@ -2,9 +2,10 @@ import { Outlet } from "react-router-dom";
 import { Form } from "./Form"
 import { TodoList } from "./TodoList/TodoList"
 import { Button, Container, Padding } from "@zextras/carbonio-design-system";
-import { createContext, useCallback, useState } from "react";
+import { useCallback, useContext } from "react";
 import { SelectionActive } from "./MultipleSelection/SelectionActive";
 import { SelectionNotActive } from "./MultipleSelection/SelectionNotActive";
+import { CheckboxContext } from "../App";
 
 interface Subtask {
     id: string;
@@ -28,7 +29,7 @@ interface TodoListContainerProps {
     deleteAllTodos: () => void;
 }
 
-export const Context = createContext<boolean>(false)
+
 
 export const TodoListContainer: React.FC<TodoListContainerProps> = ({
     inputValue,
@@ -38,50 +39,48 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
     deleteAllTodos,
 }) => {
 
-    const [isSelectionActive, setIsSelectionActive] = useState<boolean>(false)
+    const {isSelectionActive, setIsSelectionActive} = useContext(CheckboxContext)
 
     const toggleSelection = useCallback(() => {
         setIsSelectionActive(prev => !prev)
-    }, [])
+    }, [setIsSelectionActive])
 
     return (
-        <Context.Provider value={isSelectionActive}>
-            <Container orientation="horizontal">
-                <Container>
-                    <Container width={"500px"}>
-                        <Container orientation="horizontal" mainAlignment="flex-start" padding={"10px 0"}>
-                            {isSelectionActive ?
-                                <SelectionActive
-                                    toggleSelection={toggleSelection}
-                                />
-                                :
-                                <SelectionNotActive
-                                    toggleSelection={toggleSelection}
-                                />
-                            }
-                        </Container>
-                        <Form
-                            inputValue={inputValue}
-                            setInputValue={setInputValue}
-                            addTodo={addTodo}
-                        />
-                        <TodoList
-                            todos={todos}
-                        />
-                        <Padding vertical={"10px"}>
-                            <Button
-                                type="outlined"
-                                label="DELETE ALL"
-                                color="error"
-                                onClick={deleteAllTodos}
+        <Container orientation="horizontal">
+            <Container>
+                <Container width={"500px"}>
+                    <Container orientation="horizontal" mainAlignment="flex-start" padding={"10px 0"}>
+                        {isSelectionActive ?
+                            <SelectionActive
+                                toggleSelection={toggleSelection}
                             />
-                        </Padding>
+                            :
+                            <SelectionNotActive
+                                toggleSelection={toggleSelection}
+                            />
+                        }
                     </Container>
-                </Container>
-                <Container>
-                    <Outlet />
+                    <Form
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        addTodo={addTodo}
+                    />
+                    <TodoList
+                        todos={todos}
+                    />
+                    <Padding vertical={"10px"}>
+                        <Button
+                            type="outlined"
+                            label="DELETE ALL"
+                            color="error"
+                            onClick={deleteAllTodos}
+                        />
+                    </Padding>
                 </Container>
             </Container>
-        </Context.Provider>
+            <Container>
+                <Outlet />
+            </Container>
+        </Container>
     )
 }

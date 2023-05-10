@@ -1,4 +1,4 @@
-import { Accordion, Container, Divider } from "@zextras/carbonio-design-system"
+import { Accordion, AccordionItemType, Container, Divider } from "@zextras/carbonio-design-system"
 import { useNavigate } from "react-router-dom";
 import { CheckboxComponent } from "../Accordions/CheckboxComponent";
 import { ChildCustomComponent } from "../Accordions/ChildCustomComponent";
@@ -32,13 +32,14 @@ export const TodoListAccordionSection: React.FC<TodoListAccordionSectionProps> =
         navigate("/todos/" + todo.id)
     }, [navigate, todo.id])
 
-    const items = [
+    const items: Array<AccordionItemType & { isCompleted?: boolean }> = [
         {
             id: todo.id,
             label: todo.label,
             onClick: goToDetail,
             badgeCounter: todo.items.length,
             CustomComponent: CheckboxComponent,
+            isCompleted: todo.isCompleted,
             items: todo.items.map((subtask) => ({
                 id: subtask.id,
                 label: subtask.label,
