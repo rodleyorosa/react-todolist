@@ -39,7 +39,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
     deleteAllTodos,
 }) => {
 
-    const {isSelectionActive, setIsSelectionActive} = useContext(CheckboxContext)
+    const { isSelectionActive, setIsSelectionActive } = useContext(CheckboxContext)
 
     const toggleSelection = useCallback(() => {
         setIsSelectionActive(prev => !prev)

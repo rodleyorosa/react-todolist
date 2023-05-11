@@ -1,6 +1,7 @@
 import { createContext, useCallback, useEffect, useState } from "react"
 import { v4 } from 'uuid';
 import { Router } from "./router"
+import { ModalComponent } from "./components/Modal/ModalComponent";
 
 interface Subtask {
   id: string;
@@ -23,6 +24,9 @@ interface ContextProps {
   handleCompleteSelectedTasks: () => void;
   isSelectionActive: boolean;
   setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>
+  openModal: boolean;
+  closeModalHandler: () => void;
+  clickModalHandler: () => void
 }
 
 export const CheckboxContext = createContext<ContextProps>({
@@ -31,7 +35,10 @@ export const CheckboxContext = createContext<ContextProps>({
   handleDeleteSelectedTasks: () => undefined,
   handleCompleteSelectedTasks: () => undefined,
   isSelectionActive: false,
-  setIsSelectionActive: () => undefined
+  setIsSelectionActive: () => undefined,
+  openModal: false,
+  closeModalHandler: () => undefined,
+  clickModalHandler: () => undefined
 })
 
 const App: React.FC = () => {
@@ -42,6 +49,7 @@ const App: React.FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [isSelectionActive, setIsSelectionActive] = useState<boolean>(false)
   const [selectedTasks, setSelectedTasks] = useState<string[]>([])
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   // Carica i todos dal localStorage al mount
   useEffect(() => {
@@ -167,8 +175,29 @@ const App: React.FC = () => {
     setIsSelectionActive(prev => !prev)
   }, [selectedTasks])
 
+  const clickModalHandler = useCallback(() => {
+    setOpenModal(true)
+  }, [])
+
+  const closeModalHandler = useCallback(() => {
+    setOpenModal(false)
+  }, [])
+
   return (
-    <CheckboxContext.Provider value={{ selectedTasks, setSelectedTasks, handleDeleteSelectedTasks, handleCompleteSelectedTasks, isSelectionActive, setIsSelectionActive }}>
+    <CheckboxContext.Provider value={{
+      selectedTasks,
+      setSelectedTasks,
+      handleDeleteSelectedTasks,
+      handleCompleteSelectedTasks,
+      isSelectionActive,
+      setIsSelectionActive,
+      openModal,
+      closeModalHandler,
+      clickModalHandler
+    }}>
+      <ModalComponent
+        todos={todos}
+      />
       <Router
         inputValue={inputValue}
         setInputValue={setInputValue}

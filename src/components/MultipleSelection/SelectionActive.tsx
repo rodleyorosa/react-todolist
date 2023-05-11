@@ -12,14 +12,17 @@ interface ContextProps {
     handleDeleteSelectedTasks: () => void;
     handleCompleteSelectedTasks: () => void;
     isSelectionActive: boolean;
-    setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>
+    setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>;
+    openModal: boolean;
+    closeModalHandler: () => void;
+    clickModalHandler: () => void
 }
 
 export const SelectionActive: React.FC<SelectionActiveProps> = ({
     toggleSelection,
 }) => {
 
-    const { selectedTasks, handleDeleteSelectedTasks, handleCompleteSelectedTasks } = useContext<ContextProps>(CheckboxContext)
+    const { selectedTasks, handleDeleteSelectedTasks, handleCompleteSelectedTasks, clickModalHandler } = useContext<ContextProps>(CheckboxContext)
 
     return (
         <Container orientation="horizontal">
@@ -40,6 +43,7 @@ export const SelectionActive: React.FC<SelectionActiveProps> = ({
             </Container>
             {selectedTasks.length > 0 &&
                 <>
+                    <IconButton icon={"Move"} onClick={clickModalHandler} size="large" iconColor={"primary"} />
                     <IconButton icon={"DoneAll"} onClick={handleCompleteSelectedTasks} size="large" iconColor={"primary"} />
                     <IconButton icon={"Trash2Outline"} onClick={handleDeleteSelectedTasks} size="large" iconColor={"primary"} />
                 </>

@@ -20,11 +20,14 @@ interface CustomComponentProps {
 
 interface ContextProps {
     selectedTasks: string[];
-    setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>
+    setSelectedTasks: React.Dispatch<React.SetStateAction<string[]>>;
     handleDeleteSelectedTasks: () => void;
     handleCompleteSelectedTasks: () => void;
     isSelectionActive: boolean;
-    setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>
+    setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>;
+    openModal: boolean;
+    closeModalHandler: () => void;
+    clickModalHandler: () => void
 }
 
 
@@ -68,8 +71,9 @@ export const CheckboxComponent: React.FC<CustomComponentProps> = ({ item }) => {
                 }
             </Container>
             {item.badgeCounter ? (
-                <Badge value={item.badgeCounter} type="unread" />
+                <Badge value={item.badgeCounter} type={item.isCompleted ? "read" : "unread"} />
             ) : null}
         </Container>
+        
     );
 };
