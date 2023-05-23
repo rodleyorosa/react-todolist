@@ -25,11 +25,8 @@ interface ContextProps {
     handleCompleteSelectedTasks: () => void;
     isSelectionActive: boolean;
     setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>;
-    openModal: boolean;
-    closeModalHandler: () => void;
-    clickModalHandler: () => void
+    toggleSelection: () => void;
 }
-
 
 export const CheckboxComponent: React.FC<CustomComponentProps> = ({ item }) => {
     const [checked, setChecked] = useState<boolean>(false);

@@ -1,31 +1,47 @@
 import { Button, Container, Input, InputProps } from "@zextras/carbonio-design-system"
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface FormProps {
-    inputValue: string;
-    setInputValue: (e: string) => void;
-    addTodo: () => void;
+    defaultInputValue: string;
+    handleConfirmCallback: (value: string) => void;
+    buttonLabel: string;
 }
 
-export const Form: React.FC<FormProps> = ({ inputValue, setInputValue, addTodo }) => {
+export const Form: React.FC<FormProps> = ({
+    defaultInputValue,
+    handleConfirmCallback,
+    buttonLabel
+}) => {
+
+    const [inputValue, setInputValue] = useState<string>(defaultInputValue)
+
+    useEffect(() => {
+        setInputValue(defaultInputValue)
+    }, [defaultInputValue])
 
     const inputChangeHandler = useCallback<NonNullable<InputProps["onChange"]>>((e) => {
         setInputValue(e.target.value)
     }, [setInputValue])
+    
+    const handlerConfirm = useCallback(() => {
+        handleConfirmCallback(inputValue)
+        setInputValue("")
+    }, [inputValue, handleConfirmCallback])
 
     return (
         <Container background={"gray5"} orientation="horizontal">
             <Input
                 value={inputValue}
                 onChange={inputChangeHandler}
-                onEnter={addTodo}
+                onEnter={handlerConfirm}
+                placeholder="Add a new task..."
             />
             <Button
                 type="outlined"
                 width="fit"
                 minWidth="fit-content"
-                label="Add"
-                onClick={addTodo}
+                label={buttonLabel}
+                onClick={handlerConfirm}
             />
         </Container>
     )

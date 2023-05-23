@@ -1,5 +1,8 @@
-import { Container, Icon, Input, Padding, Text } from "@zextras/carbonio-design-system"
+import { Container, Icon, Padding, Text } from "@zextras/carbonio-design-system"
 import { Link } from "react-router-dom"
+import { todoStore } from "../../store";
+import { useCallback, useState } from "react";
+import { Form } from "../Form";
 
 interface SubtaskProps {
     id: string;
@@ -17,21 +20,24 @@ interface Todo {
 
 interface DetailContainerProps {
     todo: Todo;
-    isEdit: boolean;
-    toggleEdit: (todoText: string) => void;
-    editTodo: (id: string, newText: string) => void;
-    newInputValue: string;
-    setNewInputValue: (e: string) => void;
 }
 
 export const DetailContainer: React.FC<DetailContainerProps> = ({
     todo,
-    isEdit,
-    toggleEdit,
-    editTodo,
-    newInputValue,
-    setNewInputValue
 }) => {
+
+    const [isEdit, setIsEdit] = useState<boolean>(false)
+
+    const { editTodo } = todoStore((state) => state)
+
+    const toggleEdit = useCallback(() => {
+        setIsEdit(prev => !prev)
+    }, [])
+
+    const handleEditTodo = useCallback((value: string) => {
+        editTodo(todo.id, value)
+        setIsEdit(false)
+    }, [editTodo, setIsEdit, todo.id])
 
     return (
         <Container crossAlignment="flex-start">
@@ -43,12 +49,11 @@ export const DetailContainer: React.FC<DetailContainerProps> = ({
             </Container>
             <Padding vertical={"20px"} width="100%">
                 {!isEdit ?
-                    <Text onClick={() => toggleEdit(todo.label)}>{todo.label}</Text> :
-                    <Input
-                        onBlur={() => editTodo(todo.id, newInputValue)}
-                        value={newInputValue}
-                        onChange={(e) => setNewInputValue(e.target.value)}
-                        onEnter={() => editTodo(todo.id, newInputValue)}
+                    <Text onClick={toggleEdit}>{todo.label}</Text> :
+                    <Form
+                        defaultInputValue={todo.label}
+                        handleConfirmCallback={handleEditTodo}
+                        buttonLabel="Edit"
                     />
                 }
             </Padding>

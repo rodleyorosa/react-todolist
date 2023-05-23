@@ -1,12 +1,6 @@
-import { createContext, useCallback, useEffect, useState } from "react"
-import { v4 } from 'uuid';
-import { Router } from "./router"
-import { ModalComponent } from "./components/Modal/ModalComponent";
-
-interface Subtask {
-  id: string;
-  label: string;
-}
+import { createContext, useCallback, useState } from "react"
+import { Router } from "./router";
+import { todoStore } from "./store";
 
 interface Todo {
   id: string;
@@ -14,7 +8,7 @@ interface Todo {
   isCompleted: boolean;
   createdDate: Date;
   completedDate?: Date;
-  items: Subtask[];
+  items: Todo[];
 }
 
 interface ContextProps {
@@ -24,9 +18,7 @@ interface ContextProps {
   handleCompleteSelectedTasks: () => void;
   isSelectionActive: boolean;
   setIsSelectionActive: React.Dispatch<React.SetStateAction<boolean>>
-  openModal: boolean;
-  closeModalHandler: () => void;
-  clickModalHandler: () => void
+  toggleSelection: () => void;
 }
 
 export const CheckboxContext = createContext<ContextProps>({
@@ -36,116 +28,55 @@ export const CheckboxContext = createContext<ContextProps>({
   handleCompleteSelectedTasks: () => undefined,
   isSelectionActive: false,
   setIsSelectionActive: () => undefined,
-  openModal: false,
-  closeModalHandler: () => undefined,
-  clickModalHandler: () => undefined
+  toggleSelection: () => undefined
 })
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [inputValue, setInputValue] = useState<string>('')
+  const [todos2, setTodos2] = useState<Todo[]>([])
   const [subtaskInputValue, setSubtaskInputValue] = useState<string>("");
-  const [newInputValue, setNewInputValue] = useState<string>("")
-  const [isEdit, setIsEdit] = useState<boolean>(false)
   const [isSelectionActive, setIsSelectionActive] = useState<boolean>(false)
   const [selectedTasks, setSelectedTasks] = useState<string[]>([])
-  const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const { todos } = todoStore((state) => state)
 
   // Carica i todos dal localStorage al mount
-  useEffect(() => {
-    const storedTodos = localStorage.getItem('todos');
-    if (storedTodos) {
-      setTodos(JSON.parse(storedTodos))
-    }
-  }, [])
+  // useEffect(() => {
+  //   const storedTodos = localStorage.getItem('todos');
+  //   if (storedTodos) {
+  //     addTodo(JSON.parse(storedTodos))
+  //   }
+  // }, [addTodo])
 
   // Salva i todos al localStorage quando cambiano
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos))
-  }, [todos])
+  // useEffect(() => {
+  //   localStorage.setItem('todos', JSON.stringify(todos))
+  // }, [todos])
 
-  const addTodo = useCallback(() => {
-    if (inputValue !== '') {
-      const newTodo = {
-        id: v4(),
-        label: inputValue,
-        isCompleted: false,
-        createdDate: new Date(),
-        completedDate: undefined,
-        items: [],
-      }
+  
+  // const addSubtask = useCallback((todoId: string, subtaskText: string) => {
+  //   if (!subtaskText.trim()) {
+  //     return;
+  //   }
+  //   const updatedTodos = todos.map((todo) => {
+  //     if (todo.id === todoId) {
+  //       return {
+  //         ...todo,
+  //         items: [
+  //           ...todo.items,
+  //           { id: v4(), label: subtaskText },
+  //         ],
+  //       };
+  //     } else {
+  //       return todo;
+  //     }
+  //   });
 
-      setTodos((prev) => [...prev, newTodo])
-      setInputValue("")
-
-    }
-  }, [inputValue])
-
-  const toggleEdit = useCallback((todoText) => {
-    setNewInputValue(todoText)
-    setIsEdit(!isEdit)
-  }, [isEdit])
-
-  const editTodo = useCallback((id: string, newText: string) => {
-    setTodos((prev) => {
-      return prev.map(todo => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            label: newText ? newText : '-'
-          }
-        }
-        return todo
-      })
-    })
-    setIsEdit(false)
-  }, [])
-
-  const deleteTodo = useCallback((id: string) => {
-    setTodos((prev) => prev.filter(todo => todo.id !== id))
-  }, [])
-
-  const completeTodo = useCallback((id: string) => {
-    setTodos((prev) => {
-      return prev.map(todo =>
-        todo.id === id ? {
-          ...todo,
-          isCompleted: !todo.isCompleted,
-          completedDate: new Date()
-        } : todo
-      )
-    })
-
-  }, []);
-
-  const addSubtask = useCallback((todoId: string, subtaskText: string) => {
-    if (!subtaskText.trim()) {
-      return;
-    }
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === todoId) {
-        return {
-          ...todo,
-          items: [
-            ...todo.items,
-            { id: v4(), label: subtaskText },
-          ],
-        };
-      } else {
-        return todo;
-      }
-    });
-
-    setSubtaskInputValue("");
-    setTodos(updatedTodos);
-  }, [todos])
-
-  const deleteAllTodos = useCallback(() => {
-    setTodos([])
-  }, [])
+  //   setSubtaskInputValue("");
+  //   setTodos2(updatedTodos);
+  // }, [todos])
 
   const deleteSubtask = useCallback((todoId: string, subtaskId: string) => {
-    setTodos(prev => {
+    setTodos2(prev => {
       const updatedList = prev.map(todo => {
         if (todo.id === todoId) {
           const updatedSubtasks = todo.items.filter(subtask => subtask.id !== subtaskId)
@@ -158,12 +89,12 @@ const App: React.FC = () => {
   }, [])
 
   const handleDeleteSelectedTasks = useCallback(() => {
-    setTodos(prev => prev.filter(task => !selectedTasks.includes(task.id)))
+    setTodos2(prev => prev.filter(task => !selectedTasks.includes(task.id)))
     setIsSelectionActive(prev => !prev)
   }, [selectedTasks])
 
   const handleCompleteSelectedTasks = useCallback(() => {
-    setTodos((prev) => {
+    setTodos2((prev) => {
       return prev.map(todo =>
         selectedTasks.includes(todo.id) ? {
           ...todo,
@@ -175,12 +106,8 @@ const App: React.FC = () => {
     setIsSelectionActive(prev => !prev)
   }, [selectedTasks])
 
-  const clickModalHandler = useCallback(() => {
-    setOpenModal(true)
-  }, [])
-
-  const closeModalHandler = useCallback(() => {
-    setOpenModal(false)
+  const toggleSelection = useCallback(() => {
+    setIsSelectionActive(prev => !prev)
   }, [])
 
   return (
@@ -191,30 +118,12 @@ const App: React.FC = () => {
       handleCompleteSelectedTasks,
       isSelectionActive,
       setIsSelectionActive,
-      openModal,
-      closeModalHandler,
-      clickModalHandler
+      toggleSelection
     }}>
-      <ModalComponent
-        todos={todos}
-      />
       <Router
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        addTodo={addTodo}
-        todos={todos}
-        deleteTodo={deleteTodo}
-        deleteAllTodos={deleteAllTodos}
-        completeTodo={completeTodo}
         subtaskInputValue={subtaskInputValue}
         setSubtaskInputValue={setSubtaskInputValue}
-        addSubtask={addSubtask}
-        editTodo={editTodo}
-        isEdit={isEdit}
-        setIsEdit={setIsEdit}
-        toggleEdit={toggleEdit}
-        newInputValue={newInputValue}
-        setNewInputValue={setNewInputValue}
+        // addSubtask={addSubtask}
         deleteSubtask={deleteSubtask}
       />
     </CheckboxContext.Provider>

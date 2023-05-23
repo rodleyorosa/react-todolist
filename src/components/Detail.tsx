@@ -3,36 +3,11 @@ import { useParams } from "react-router-dom"
 import styled from "styled-components";
 import { Subtask } from "./Subtasks/Subtask";
 import { DetailContainer } from "./Detail/DetailContainer";
-
-interface SubtaskProps {
-    id: string;
-    label: string;
-}
-
-interface Todo {
-    id: string;
-    label: string;
-    isCompleted: boolean;
-    createdDate: Date;
-    completedDate?: Date;
-    items: SubtaskProps[]
-}
+import { todoStore } from "../store";
 
 interface DetailProps {
-    todos: Todo[];
-    completeTodo: (id: string) => void;
-    deleteTodo: (id: string) => void;
-    addSubtask: (id: string, subtaskText: string) => void;
     subtaskInputValue: string;
     setSubtaskInputValue: (e: string) => void;
-    editTodo: (id: string, newText: string) => void;
-    inputValue: string;
-    setInputValue: (e: string) => void;
-    isEdit: boolean;
-    setIsEdit: (e: boolean) => void;
-    toggleEdit: (todoText: string) => void;
-    newInputValue: string;
-    setNewInputValue: (e: string) => void;
     deleteSubtask: (todoId: string, subtaskId: string) => void
 }
 
@@ -50,38 +25,33 @@ const ContainerBtn = styled.div`
 `
 
 export const Detail: React.FC<DetailProps> = ({
-    todos,
-    completeTodo,
-    deleteTodo,
-    addSubtask,
     subtaskInputValue,
     setSubtaskInputValue,
-    editTodo,
-    isEdit,
-    toggleEdit,
-    newInputValue,
-    setNewInputValue,
     deleteSubtask
 }) => {
+
+    const { todos, completeTodo, deleteTodo } = todoStore((state) => state)
 
     const { id } = useParams()
     const todo = todos.find(todo => todo.id === id)
     if (!todo) {
         return <h2>Task not found</h2>
     }
+    
+    const handleCompleteTodo = () => {
+        completeTodo(todo.id)
+    }
+
+    const handleDeleteTodo = () => {
+       deleteTodo(todo.id)
+    }
 
     return (
         <ContainerDetail>
             <DetailContainer
                 todo={todo}
-                isEdit={isEdit}
-                toggleEdit={toggleEdit}
-                editTodo={editTodo}
-                newInputValue={newInputValue}
-                setNewInputValue={setNewInputValue}
             />
             <Subtask
-                addSubtask={addSubtask}
                 id={todo.id}
                 subtaskInputValue={subtaskInputValue}
                 setSubtaskInputValue={setSubtaskInputValue}
@@ -94,14 +64,14 @@ export const Detail: React.FC<DetailProps> = ({
                     minWidth={"fit-content"}
                     label={todo.isCompleted ? "Undone" : "Done"}
                     color="success"
-                    onClick={() => completeTodo(todo.id)}
+                    onClick={handleCompleteTodo}
                 />
                 <Button
                     width={"fill"}
                     minWidth={"fit-content"}
                     label="Delete"
                     color="error"
-                    onClick={() => deleteTodo(todo.id)}
+                    onClick={handleDeleteTodo}
                 />
             </ContainerBtn>
         </ContainerDetail>

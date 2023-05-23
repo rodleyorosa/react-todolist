@@ -1,12 +1,10 @@
 import { IconButton, Text } from "@zextras/carbonio-design-system"
+import { useContext } from "react"
+import { CheckboxContext } from "../../App"
 
-interface SelectionNotActiveProps {
-    toggleSelection: () => void;
-}
+export const SelectionNotActive: React.FC = () => {
+    const {toggleSelection} = useContext(CheckboxContext)
 
-export const SelectionNotActive: React.FC<SelectionNotActiveProps> = ({
-    toggleSelection
-}) => {
     return (
         <>
             <IconButton

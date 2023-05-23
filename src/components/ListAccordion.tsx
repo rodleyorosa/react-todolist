@@ -1,7 +1,7 @@
 import { Accordion, AccordionItemType, Container, Divider } from "@zextras/carbonio-design-system"
+import { CheckboxComponent } from './Accordions/CheckboxComponent'
+import { ChildCustomComponent } from "./Accordions/ChildCustomComponent";
 import { useNavigate } from "react-router-dom";
-import { CheckboxComponent } from "../Accordions/CheckboxComponent";
-import { ChildCustomComponent } from "../Accordions/ChildCustomComponent";
 import { useCallback } from "react";
 
 interface Todo {
@@ -13,35 +13,33 @@ interface Todo {
     items: Todo[];
 }
 
-interface TodoListAccordionSectionProps {
-    todo: Todo;
+interface ListAccordionProps {
+    data: Todo
 }
 
-export const TodoListAccordionSection: React.FC<TodoListAccordionSectionProps> = ({
-    todo,
+export const ListAccordion:React.FC<ListAccordionProps> = ({
+    data
 }) => {
 
     const navigate = useNavigate()
 
     const goToDetail = useCallback(() => {
-        navigate("/todos/" + todo.id)
-    }, [navigate, todo.id])
+        navigate(`/todos/${data.id}`)
+    }, [navigate, data.id])
 
-    const items: Array<AccordionItemType & { isCompleted?: boolean }> = [
+    const items: Array<AccordionItemType> = [
         {
-            id: todo.id,
-            label: todo.label,
+            id: data.id,
+            label: data.label,
             onClick: goToDetail,
-            badgeCounter: todo.items.length,
             CustomComponent: CheckboxComponent,
-            isCompleted: todo.isCompleted,
-            items: todo.items.map((subtask) => ({
+            items: data.items.map((subtask) => ({
                 id: subtask.id,
                 label: subtask.label,
-                CustomComponent: ChildCustomComponent,
+                CustomComponent: ChildCustomComponent
             }))
         }
-    ];
+    ]
 
     return (
         <>
